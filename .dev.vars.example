@@ -1,0 +1,3 @@
+NODE_ENV="development"
+STAGING_AUTH="true"
+STAGING_PASSWORD="abc123"
