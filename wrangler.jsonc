@@ -15,6 +15,18 @@
 	],
 	"d1_databases": [
 	],
+	"durable_objects": {
+		"bindings": [
+			{
+				// Binding name (lowercased) is the PartySocket `party`
+				"name": "MAIN",
+				"class_name": "Main"  // Must match the exported class
+			},
+		]
+	},
+	"migrations": [
+		{ "tag": "v1", "new_sqlite_classes": ["Main"] }
+	],
 	/**
 	 * Static Assets
 	 * https://developers.cloudflare.com/workers/static-assets/binding/
@@ -50,12 +62,6 @@
 	 * https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement
 	 */
 	// "placement": {  "mode": "smart" }
-	/**
-	 * Bindings
-	 * Bindings allow your Worker to interact with resources on the Cloudflare Developer Platform, including
-	 * databases, object storage, AI inference, real-time communication and more.
-	 * https://developers.cloudflare.com/workers/runtime-apis/bindings/
-	 */
 	/**
 	 * Environment Variables
 	 * https://developers.cloudflare.com/workers/wrangler/configuration/#environment-variables

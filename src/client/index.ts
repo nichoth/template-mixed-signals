@@ -10,11 +10,14 @@ import './style.css'
 
 const router = Router()
 const state = State()
-const debug = Debug('template')
+const debug = Debug('mixed-signals')
 
 if (import.meta.env.DEV || import.meta.env.MODE === 'staging') {
     // @ts-expect-error DEV env
     window.state = state
+    localStorage.setItem('DEBUG', 'mixed-signals,mixed-signals:*')
+} else {
+    localStorage.removeItem('DEBUG')
 }
 
 // example of calling our API
@@ -22,6 +25,10 @@ const json = await ky.get('/api/helloworld').json()
 
 export const Example:FunctionComponent = function Example () {
     debug('rendering example...')
+    if (!state.rpc.value) {
+        return null
+    }
+
     const match = useComputed(() => router.match(state.route.value))
 
     if (!match.value || !match.value.action) {
