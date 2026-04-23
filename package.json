@@ -17,6 +17,8 @@
   },
   "dependencies": {
     "@preact/signals": "^2.5.1",
+    "@substrate-system/button": "^0.0.38",
+    "@substrate-system/input": "^0.0.24",
     "@substrate-system/routes": "^5.0.0",
     "hono": "^4.12.14",
     "hono-party": "^2.0.3",
