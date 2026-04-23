@@ -71,19 +71,28 @@ export class Main extends Server {
         this.rpc.registerModel('Todos', Todos)
     }
 
+    // Handle new WebSocket connections
+    // onConnect (conn) {
+    onConnect (conn:Connection, _ctx:ConnectionContext):void|Promise<void> {
+        let msgHandler:(data:any)=>void = () => {}
+        const removeClient = this.rpc.addClient({
+            send: (message) => conn.send(message),
+            onMessage: (cb) => { msgHandler = cb }
+        })
+
+        this.clientHandlers.set(conn.id, msgHandler)
+        this.clientCleanup.set(conn.id, removeClient)
+    }
+
     onMessage (connection:Connection, message:WSMessage):void|Promise<void> {
         const handler = this.clientHandlers.get(connection.id)
         if (!handler) return
 
-        try {
-            const raw = typeof message === 'string' ?
-                message :
-                new TextDecoder().decode(message)
+        const raw = typeof message === 'string' ?
+            message :
+            new TextDecoder().decode(message)
 
-            handler(JSON.parse(raw))
-        } catch (err) {
-            console.error('Invalid JSON from client', err)
-        }
+        handler(raw)
     }
 
     onClose (connection:any):void {
@@ -98,19 +107,6 @@ export class Main extends Server {
 
     onError (connection:Connection, error:unknown) {
         console.error(`WebSocket error for ${connection.id}`, error)
-    }
-
-    // Handle new WebSocket connections
-    // onConnect (conn) {
-    onConnect (conn:Connection, _ctx:ConnectionContext):void|Promise<void> {
-        let msgHandler:(data:any)=>void = () => {}
-        const removeClient = this.rpc.addClient({
-            send: (message) => conn.send(JSON.stringify(message)),
-            onMessage: (cb) => { msgHandler = cb }
-        })
-
-        this.clientHandlers.set(conn.id, msgHandler)
-        this.clientCleanup.set(conn.id, removeClient)
     }
 }
 
@@ -133,7 +129,7 @@ app.use('*', async (c, next) => {
 })
 
 // Mount PartyServer routes.
-app.use('/rpc/*', partyserverMiddleware({
+app.use('*', partyserverMiddleware({
     options: {
         prefix: 'rpc',
     },

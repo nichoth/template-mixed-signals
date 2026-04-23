@@ -10,7 +10,7 @@ import './style.css'
 
 const router = Router()
 const state = State()
-const debug = Debug('mixed-signals')
+const debug = Debug('mixed-signals:view')
 
 if (import.meta.env.DEV || import.meta.env.MODE === 'staging') {
     // @ts-expect-error DEV env
@@ -81,7 +81,7 @@ export const Example:FunctionComponent = function Example () {
             </ul>
         </div>
 
-        <${ChildNode} />
+        <${ChildNode} state=${state} />
     </div>`
 }
 

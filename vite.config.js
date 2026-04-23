@@ -36,7 +36,7 @@ export default defineConfig(({ mode }) => {
             },
         },
         server: {
-            port: 8888,
+            port: 3333,
             host: true,
             open: true,
         },

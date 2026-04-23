@@ -1,17 +1,17 @@
-import { type Signal, signal } from '@preact/signals'
+import { batch, type Signal, signal } from '@preact/signals'
 import PartySocket from 'partysocket'
 import { RPCClient, createReflectedModel } from 'mixed-signals/client'
 import Route from 'route-event'
 import type { Todo, Todos } from '../shared.js'
 import Debug from '@substrate-system/debug'
-const debug = Debug('mixed-signals')
+const debug = Debug('mixed-signals:state')
 
 const TodoModel = createReflectedModel<Todo>(['text', 'done'], ['toggle'])
 const TodosModel = createReflectedModel<Todos>(['all'], ['add'])
 
 let HOST = 'example.com'
 if (import.meta.env.DEV) {
-    HOST = 'localhost:8888'
+    HOST = location.host
 } else if (import.meta.env.MODE === 'staging') {
     HOST = 'staging.example.com'
 }
@@ -26,35 +26,37 @@ export type AppState = {
 }
 
 /**
- * Setup any state
+ * Setup state
  *   - routes
+ *   - websocket
+ *   - rpc/mixed-signals
  */
-export function State ():AppState {  // eslint-disable-line indent
+export function State ():AppState {
     const onRoute = Route()
     const socket = new PartySocket({
         host: HOST,
-        prefix: 'rpc',  // replaces the default `parties` URL segment
-        // Must match the DO binding name in wrangler.jsonc, lowercased
+        prefix: 'rpc',  // replace the default `parties` URL segment
+        // match the DO binding name in wrangler.jsonc
         party: 'main',
         room: 'rpc',
     })
 
-    debug('in state')
-
     const rpc = new RPCClient({
         send: socket.send.bind(socket),
-        onMessage: socket.addEventListener.bind(socket, 'message'),
+        onMessage: (cb) => {
+            socket.addEventListener('message', (ev:MessageEvent) => {
+                cb(ev.data)
+            })
+        },
         ready: new Promise((resolve) => {
             socket.addEventListener('open', () => {
-                debug('open!!!')
                 resolve()
             }, { once: true })
         })
     }, {})
+
     rpc.registerModel('Todo', TodoModel)
     rpc.registerModel('Todos', TodosModel)
-
-    debug('rpcccccccc', rpc)
 
     const state = {
         _setRoute: onRoute.setRoute.bind(onRoute),
@@ -67,8 +69,13 @@ export function State ():AppState {  // eslint-disable-line indent
     };
 
     (async () => {
+        debug('waiting!')
         await rpc.ready
-        state.rpc.value = rpc
+        debug('all ready...')
+        batch(() => {
+            state.rpc.value = rpc
+            state.todos = rpc.root.todos
+        })
     })()
 
     /**
