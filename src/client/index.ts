@@ -7,6 +7,12 @@ import { State } from './state.js'
 import { Button } from './components/button.js'
 import Router from './routes/index.js'
 import './style.css'
+import '@substrate-system/input'
+import '@substrate-system/input/css'
+import '@substrate-system/button'
+import '@substrate-system/button/css'
+import '@substrate-system/check-box'
+import '@substrate-system/check-box/css'
 
 const router = Router()
 const state = State()
