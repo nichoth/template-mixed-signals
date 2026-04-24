@@ -1,0 +1,21 @@
+.route.home {
+    & .add-todo {
+        display: flex;
+        gap: 0.5rem;
+        align-items: flex-end;
+    }
+
+    & .todo-list {
+        list-style: none;
+        padding: 0;
+
+        & li {
+            margin-bottom: 0.5rem;
+
+            &.done {
+                text-decoration: line-through;
+                opacity: 0.6;
+            }
+        }
+    }
+}

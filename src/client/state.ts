@@ -19,7 +19,7 @@ if (import.meta.env.DEV) {
 export type AppState = {
     route:Signal<string>;
     count:Signal<number>;
-    todos:{ all:Signal<any>, add };
+    todos:{ all:Signal<Todo[]>, add:(text:string)=>Todo };
     _setRoute:(path:string)=>void;
     socket:PartySocket;
     rpc:Signal<RPCClient|null>;

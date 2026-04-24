@@ -31,12 +31,13 @@ export const Button:FunctionComponent<ButtonProps> = function (props) {
         }
     }
 
-    return html`<button
+    return html`<substrate-button
         ...${_props}
         onClick=${click}
         disabled=${isSpinning.value || _props.disabled}
+        spinning=${isSpinning.value ? '' : null}
         className=${classes}
     >
         <span className="btn-content">${props.children}</span>
-    </button>`
+    </substrate-button>`
 }
