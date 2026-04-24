@@ -16,7 +16,7 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@preact/signals": "^2.5.1",
+    "@preact/signals": "^2.9.0",
     "@substrate-system/button": "^0.0.38",
     "@substrate-system/check-box": "^0.0.16",
     "@substrate-system/input": "^0.0.24",
