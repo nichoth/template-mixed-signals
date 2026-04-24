@@ -4,6 +4,10 @@ import { useSignal } from '@preact/signals'
 import { type AppState, State } from '../state.js'
 import { Button } from '../components/button.js'
 import Debug from '@substrate-system/debug'
+import { SubstrateInput } from '@substrate-system/input'
+import '@substrate-system/input/css'
+import { CheckBox } from '@substrate-system/check-box'
+import '@substrate-system/check-box/css'
 import './home.css'
 const debug = Debug('mixed-signals:route:home')
 
@@ -35,11 +39,11 @@ export const HomeRoute:FunctionComponent<{
         <h2>todos</h2>
 
         <form class="add-todo" onSubmit=${onSubmit}>
-            <substrate-input
+            <${SubstrateInput.TAG}
                 name="todo"
                 placeholder="What needs doing?"
                 onInput=${onInput}
-            ></substrate-input>
+            ><//>
             <${Button} type="submit">Add<//>
         </form>
 
@@ -50,10 +54,10 @@ export const HomeRoute:FunctionComponent<{
                     key=${i}
                     class=${done ? 'done' : ''}
                 >
-                    <check-box
+                    <${CheckBox.TAG}
                         checked=${done}
                         onChange=${() => todo.toggle()}
-                    >${todo.text.value}</check-box>
+                    >${todo.text.value}<//>
                 </li>`
             })}
         </ul>

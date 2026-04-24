@@ -1,6 +1,8 @@
 import { html } from 'htm/preact'
 import { type FunctionComponent } from 'preact'
 import { type Signal, useSignal } from '@preact/signals'
+import { SubstrateButton } from '@substrate-system/button'
+import '@substrate-system/button/css'
 import './button.css'
 
 interface ButtonProps {
@@ -31,7 +33,7 @@ export const Button:FunctionComponent<ButtonProps> = function (props) {
         }
     }
 
-    return html`<substrate-button
+    return html`<${SubstrateButton.TAG}
         ...${_props}
         onClick=${click}
         disabled=${isSpinning.value || _props.disabled}
@@ -39,5 +41,5 @@ export const Button:FunctionComponent<ButtonProps> = function (props) {
         className=${classes}
     >
         <span className="btn-content">${props.children}</span>
-    </substrate-button>`
+    <//>`
 }

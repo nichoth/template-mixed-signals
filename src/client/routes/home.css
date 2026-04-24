@@ -1,8 +1,17 @@
 .route.home {
-    & .add-todo {
+    & form.add-todo {
         display: flex;
-        gap: 0.5rem;
-        align-items: flex-end;
+        gap: 1rem;
+        align-items: baseline;
+        justify-content: space-between;
+
+        & substrate-input {
+            width: 100%;
+
+            & input {
+                font-size: 1rem;
+            }
+        }
     }
 
     & .todo-list {
