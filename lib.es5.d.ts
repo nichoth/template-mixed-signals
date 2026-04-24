@@ -17,3 +17,7 @@ interface Array<T> {
   filter<S extends T>(predicate: BooleanConstructor, thisArg?: any)
     : Exclude<S, Falsy>[];
 }
+
+declare module '@substrate-system/input/css' {}
+declare module '@substrate-system/button/css' {}
+declare module '@substrate-system/check-box/css' {}
