@@ -29,7 +29,7 @@
     "partyserver": "^0.4.1",
     "partysocket": "^1.1.18",
     "preact": "^10.28.0",
-    "route-event": "^7.4.0"
+    "route-event": "^8.1.0"
   },
   "devDependencies": {
     "@cloudflare/vite-plugin": "^1.19.0",
